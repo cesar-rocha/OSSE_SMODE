@@ -2,7 +2,7 @@ import numpy as np
 import unittest
 from SpectralUtils import *
 
-def test_parseval(nt=28,n=256,rtol=1.e-4):
+def test_parseval(nt=28,n=256,rtol=1.e-3):
     """
         Test Parseva's relationship.
     """
@@ -30,5 +30,19 @@ def test_parseval(nt=28,n=256,rtol=1.e-4):
     # Test if differences are within rtol
     assert(np.allclose(specvar, physvar, rtol=rtol))
 
+def test_wavenumbers(n=64,rtol=1e-14):
+    """
+        Test wavenumber array against
+        built-in numpy fftfreq.
+    """
+
+    # Test if myk = k within machine precision
+    # for two case N even and N odd
+    for N in (n,n+1):
+        myk = Wavenumbers(N,dx=1.0)
+        k   = np.fft.rfftfreq(N,d=1.0)
+        assert(np.allclose(myk, k, rtol=rtol))
+
 if __name__ == "__main__":
     test_parseval()
+    test_wavenumbers()
