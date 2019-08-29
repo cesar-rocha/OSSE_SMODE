@@ -4,8 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import gsw
 
-from SpectralUtils import *
-
 plt.close("all")
 
 # Directory with ROMS output provided by 
