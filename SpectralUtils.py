@@ -23,7 +23,7 @@ def Wavenumbers(nx,dx):
         k = dk*np.arange(nx/2+1)
     return k
 
-def OneDimSpectra(f,dx,dy):
+def OneDimSpectra(f,dx,dy,windowing=True,detrending=True):
     """
         Calculates one dimensional spectra
         of ROMS model field f.
@@ -34,7 +34,6 @@ def OneDimSpectra(f,dx,dy):
                    with arrays specdic[label]['wavenumber']
                    and specdic[label]['spectrum'].
     """
-
     # Spectra grid
     nt, ny, nx = f.shape
    
@@ -45,15 +44,20 @@ def OneDimSpectra(f,dx,dy):
         k = Wavenumbers(n,d)
 
         # Spectral window
-        win  = np.hanning(n)
-        win *= np.sqrt(n/(win**2).sum())
+        if windowing:
+            win  = np.hanning(n)
+            win *= np.sqrt(n/(win**2).sum())
+        else:
+            win = np.ones(n)
+
         if axis == 1:
             win = win[np.newaxis,:,np.newaxis]
         elif axis == 2:
             win = win[np.newaxis,np.newaxis,:]
 
         # Remove linear trend
-        f = detrend(f,axis=axis, type='linear')
+        if detrending:
+            f = detrend(f,axis=axis, type='linear')
 
         # Calculate the spectrum
         fh = np.fft.rfft(f*win, axis=axis)
