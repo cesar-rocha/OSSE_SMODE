@@ -12,10 +12,8 @@ plt.close("all")
 # Roy Barkan to Eric D'Asaro during LASER.
 __datadir__ = "DATA/"
 
-# Surface fields and derived quantities.
+# Surface fields
 surface = Dataset(__datadir__+"surface_150.nc")
-div     = Dataset(__datadir__+"div150.nc")
-vort    = Dataset(__datadir__+"vort150.nc")
 
 # Model grid (dx ≈ 450 m, dy ≈ 450 m).
 # Vorticity seems to be on the same grid,
